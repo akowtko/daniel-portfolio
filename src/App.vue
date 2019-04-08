@@ -133,6 +133,9 @@
                 <div class="headline" style="font-weight:500;color:#03BBC1">
                   Signal Processing
                 </div>
+                <div class="body-1" style="color:#306b93">
+                  Analysis of Optical Data
+                </div>
               </v-flex>
               <v-flex xs3>
                 <v-btn
@@ -145,11 +148,11 @@
                   <v-icon size="50">fas fa-microscope</v-icon>
                 </v-btn>
                 <div class="headline" style="font-weight:500;color:#03BBC1">
-                  Equipment
+                  Scientific Equipment
                 </div>
                 <div class="body-1" style="color:#306b93">
-                  Ultra-high-vacuum equipment<br />X-ray free electron laser<br />Tabletop
-                  optical lasers
+                  Ultra-high-vacuum Equipment<br />X-ray Free Electron Laser<br />Tabletop
+                  Optical Lasers <br />Synchrotron Radiation
                 </div>
               </v-flex>
             </v-layout>
@@ -181,10 +184,9 @@
                     >
                       {{ position.location }}
                     </div>
-                    <div class="body-1 primary--text pb-1">
-                      {{ position.description }}
+                    <div class="body-1 primary--text pb-1" v-html="position.description">
                     </div>
-                    <div class="body-2 secondary--text">
+                    <div class="body-2 secondary--text" v-if="position.end">
                       Thru {{ formatDate(position.end) }}
                     </div>
                   </div>
@@ -227,6 +229,41 @@ export default {
       tab: 0,
       experience: [
         {
+          start: "Current",
+          end: "",
+          name: "Research Associate",
+          location: "SLAC National Accelerator Laboratory",
+          description: "bork bork bork bork bork"
+        },
+        {
+          start: "09-2012",
+          end: "03-2018",
+          name: "Graduate Research Assistant",
+          location:
+            "Stanford University",
+          description: "– Determined the speed and magnitude of high intensity X-ray-induced electronic and magnetic changes in a solid.<br><br>" +
+                  "– Observed signs of stimulated resonant inelastic X-ray scattering in a solid.<br><br>" +
+                  "– Improved the sensitivity of femtosecond X-ray magnetic circular dichroism absorption spec- troscopy such that studies which previously took weeks of data collection can now be completed in less than 20 minutes.<br><br>" +
+                  "– Performed X-ray-based studies of ultrafast dynamics in magnetic materials of current techno- logical interest."
+        },
+        {
+          start: "03-2011",
+          end: "09-2012",
+          name: "Undergraduate Research Assistant",
+          location:
+            "Randy Bartels Research Group, Colorado State University",
+          description: "– Improved and extended the optical imaging technique of Spatial Frequency Modulation for Imaging (SPIFI).<br><br>– Experimentally, numerically, and theoretically analyzed effects of diffraction, defocus, and other\n" +
+                  "aberrations on SPIFI."
+        },
+        {
+          start: "08-2010",
+          end: "05-2011",
+          name: "Lab-on-a-Chip Diagnostic Biosensor Senior Design Project Member",
+          location:
+            "Kevin Lear Research Group, Colorado State University",
+          description: "Worked with interdisciplinary (chemical and biological engineering, as well as electrical and computer engineering) undergraduate team and graduate students on improving and testing Local Evanescent Array Coupled Waveguide (LEAC) biosensor chips."
+        },
+        {
           start: "06-2010",
           end: "08-2010",
           name: "Summer Undergraduate Research Fellow",
@@ -264,7 +301,11 @@ export default {
       this.tab = section;
     },
     formatDate(dateString) {
-      return this.moment(dateString, "MM-YYYY").format("MMMM YYYY");
+      try {
+        return this.moment(dateString, "MM-YYYY").format("MMMM YYYY");
+      } catch(err) {
+        return dateString;
+      }
     }
   }
 };
