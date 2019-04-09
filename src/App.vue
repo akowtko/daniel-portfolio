@@ -1,21 +1,23 @@
 <template>
   <v-app>
     <v-toolbar dark app color="primary">
-      <v-toolbar-title class="headline clickable" @click="changeTabs(0)">
+      <v-toolbar-title
+        class="headline clickable"
+        @click="scrollMeTo('home', 0)"
+      >
         Daniel Higley
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn @click="changeTabs(1)" :disabled="tab === 1" flat>About</v-btn>
-      <v-btn flat :disabled="tab === 2" @click="changeTabs(2)">Skills</v-btn>
-      <v-btn flat :disabled="tab === 3" @click="changeTabs(3)"
-        >Experience</v-btn
-      >
+      <v-btn @click="scrollMeTo('about', 0)" flat>About</v-btn>
+      <v-btn flat @click="scrollMeTo('skills', 0)">Skills</v-btn>
+      <v-btn flat @click="changeTabs(1)">Experience</v-btn>
     </v-toolbar>
     <v-content>
       <v-tabs-items v-model="tab">
         <v-container fluid pa-0>
           <v-tab-item key="home">
             <v-img
+              ref="home"
               :src="require('./assets/polygon-background.jpg')"
               height="600px"
             >
@@ -31,12 +33,20 @@
                 </div>
               </v-layout>
             </v-img>
-          </v-tab-item>
-          <v-tab-item key="about">
-            <div class="display-2 primary--text text-xs-center pt-4">
+            <div
+              ref="about"
+              class="display-2 primary--text text-xs-center pt-4 hidden"
+              v-infocus="'showElement'"
+            >
               ABOUT
             </div>
-            <v-layout justify-center align-center fill-height>
+            <v-layout
+              justify-center
+              align-center
+              fill-height
+              class="hidden"
+              v-infocus="'showElement'"
+            >
               <v-flex xs5 pa-4>
                 <v-layout column align-center>
                   <v-flex xs6 text-xs-center pb-5>
@@ -80,13 +90,29 @@
                 </div>
               </v-flex>
             </v-layout>
-          </v-tab-item>
-          <v-tab-item key="skills">
-            <div class="display-2 primary--text text-xs-center pt-4 pb-5">
+            <div
+              ref="skills"
+              class="display-2 primary--text text-xs-center pt-4 pb-5 hidden"
+              v-infocus="'showElement'"
+            >
               SKILLS
             </div>
-            <v-layout justify-center text-xs-center fill-height>
-              <v-flex xs3>
+            <v-layout
+              justify-center
+              text-xs-center
+              fill-height
+              wrap
+              class="hidden"
+              v-infocus="'showElement'"
+            >
+              <v-flex
+                md3
+                sm4
+                xs5
+                pb-3
+                v-for="skill in skills"
+                :key="skill.name"
+              >
                 <v-btn
                   fab
                   outline
@@ -94,65 +120,16 @@
                   background-color="white"
                   style="height:100px;width:100px"
                 >
-                  <v-icon size="50">fab fa-python</v-icon>
+                  <v-icon v-if="skill.icon" size="50">{{ skill.icon }}</v-icon>
+                  <v-img v-else height="50" contain :src="skill.image" />
                 </v-btn>
                 <div class="headline" style="font-weight:500;color:#03BBC1">
-                  Python
+                  {{ skill.name }}
                 </div>
                 <div class="body-1" style="color:#306b93">
-                  Numpy<br />Scipy<br />Pandas<br />Matplotlib
-                </div>
-              </v-flex>
-              <v-flex xs3>
-                <v-btn
-                  fab
-                  outline
-                  color="secondary"
-                  style="height:100px;width:100px"
-                >
-                  <v-img
-                    height="50"
-                    contain
-                    :src="require('./assets/matlab-logo.png')"
-                  />
-                </v-btn>
-                <div class="headline" style="font-weight:500;color:#03BBC1">
-                  Matlab
-                </div>
-              </v-flex>
-              <v-flex xs3>
-                <v-btn
-                  fab
-                  outline
-                  color="secondary"
-                  background-color="white"
-                  style="height:100px;width:100px"
-                >
-                  <v-icon size="50">fas fa-wave-square</v-icon>
-                </v-btn>
-                <div class="headline" style="font-weight:500;color:#03BBC1">
-                  Signal Processing
-                </div>
-                <div class="body-1" style="color:#306b93">
-                  Analysis of Optical Data
-                </div>
-              </v-flex>
-              <v-flex xs3>
-                <v-btn
-                  fab
-                  outline
-                  color="secondary"
-                  background-color="white"
-                  style="height:100px;width:100px"
-                >
-                  <v-icon size="50">fas fa-microscope</v-icon>
-                </v-btn>
-                <div class="headline" style="font-weight:500;color:#03BBC1">
-                  Scientific Equipment
-                </div>
-                <div class="body-1" style="color:#306b93">
-                  Ultra-high-vacuum Equipment<br />X-ray Free Electron Laser<br />Tabletop
-                  Optical Lasers <br />Synchrotron Radiation
+                  <span v-for="example in skill.examples" :key="example">
+                    {{ example }}<br />
+                  </span>
                 </div>
               </v-flex>
             </v-layout>
@@ -184,8 +161,10 @@
                     >
                       {{ position.location }}
                     </div>
-                    <div class="body-1 primary--text pb-1" v-html="position.description">
-                    </div>
+                    <div
+                      class="body-1 primary--text pb-1"
+                      v-html="position.description"
+                    ></div>
                     <div class="body-2 secondary--text" v-if="position.end">
                       Thru {{ formatDate(position.end) }}
                     </div>
@@ -227,6 +206,55 @@ export default {
   data() {
     return {
       tab: 0,
+      skills: [
+        {
+          name: "Python",
+          examples: ["Numpy", "Scipy", "Pandas", "Matplotlib"],
+          icon: "fab fa-python",
+          image: ""
+        },
+        {
+          name: "Scientific Writing",
+          examples: ["Experimental proposals", "Collaborative Writing"],
+          icon: "fas fa-file-alt",
+          image: ""
+        },
+        {
+          name: "Signal Processing",
+          examples: ["Analysis of Optical Data"],
+          icon: "fas fa-wave-square",
+          image: ""
+        },
+        {
+          name: "Scientific Equipment",
+          examples: [
+            "Ultra-high-vacuum Equipment",
+            "X-ray Free Electron Laser",
+            "Tabletop Optical Lasers",
+            "Synchrotron Radiation"
+          ],
+          icon: "fas fa-microscope",
+          image: ""
+        },
+        {
+          name: "Public Speaking",
+          examples: [],
+          icon: "fas fa-chalkboard-teacher",
+          image: ""
+        },
+        {
+          name: "Latex",
+          examples: [],
+          icon: "",
+          image: require("./assets/latex-logo.png")
+        },
+        {
+          name: "Matlab",
+          examples: [],
+          icon: "",
+          image: require("./assets/matlab-logo.png")
+        }
+      ],
       experience: [
         {
           start: "Current",
@@ -239,29 +267,30 @@ export default {
           start: "09-2012",
           end: "03-2018",
           name: "Graduate Research Assistant",
-          location:
-            "Stanford University",
-          description: "– Determined the speed and magnitude of high intensity X-ray-induced electronic and magnetic changes in a solid.<br><br>" +
-                  "– Observed signs of stimulated resonant inelastic X-ray scattering in a solid.<br><br>" +
-                  "– Improved the sensitivity of femtosecond X-ray magnetic circular dichroism absorption spec- troscopy such that studies which previously took weeks of data collection can now be completed in less than 20 minutes.<br><br>" +
-                  "– Performed X-ray-based studies of ultrafast dynamics in magnetic materials of current techno- logical interest."
+          location: "Stanford University",
+          description:
+            "– Determined the speed and magnitude of high intensity X-ray-induced electronic and magnetic changes in a solid.<br><br>" +
+            "– Observed signs of stimulated resonant inelastic X-ray scattering in a solid.<br><br>" +
+            "– Improved the sensitivity of femtosecond X-ray magnetic circular dichroism absorption spec- troscopy such that studies which previously took weeks of data collection can now be completed in less than 20 minutes.<br><br>" +
+            "– Performed X-ray-based studies of ultrafast dynamics in magnetic materials of current techno- logical interest."
         },
         {
           start: "03-2011",
           end: "09-2012",
           name: "Undergraduate Research Assistant",
-          location:
-            "Randy Bartels Research Group, Colorado State University",
-          description: "– Improved and extended the optical imaging technique of Spatial Frequency Modulation for Imaging (SPIFI).<br><br>– Experimentally, numerically, and theoretically analyzed effects of diffraction, defocus, and other\n" +
-                  "aberrations on SPIFI."
+          location: "Randy Bartels Research Group, Colorado State University",
+          description:
+            "– Improved and extended the optical imaging technique of Spatial Frequency Modulation for Imaging (SPIFI).<br><br>– Experimentally, numerically, and theoretically analyzed effects of diffraction, defocus, and other\n" +
+            "aberrations on SPIFI."
         },
         {
           start: "08-2010",
           end: "05-2011",
-          name: "Lab-on-a-Chip Diagnostic Biosensor Senior Design Project Member",
-          location:
-            "Kevin Lear Research Group, Colorado State University",
-          description: "Worked with interdisciplinary (chemical and biological engineering, as well as electrical and computer engineering) undergraduate team and graduate students on improving and testing Local Evanescent Array Coupled Waveguide (LEAC) biosensor chips."
+          name:
+            "Lab-on-a-Chip Diagnostic Biosensor Senior Design Project Member",
+          location: "Kevin Lear Research Group, Colorado State University",
+          description:
+            "Worked with interdisciplinary (chemical and biological engineering, as well as electrical and computer engineering) undergraduate team and graduate students on improving and testing Local Evanescent Array Coupled Waveguide (LEAC) biosensor chips."
         },
         {
           start: "06-2010",
@@ -297,16 +326,70 @@ export default {
     };
   },
   methods: {
+    scrollMeTo(refName, tab) {
+      this.changeTabs(tab);
+      setTimeout(() => {
+        var element = this.$refs[refName];
+        var top = element.offsetTop;
+        if (refName === "home") top = 0;
+
+        window.scrollTo({ top, behavior: "smooth" });
+      }, 50);
+    },
     changeTabs(section) {
       this.tab = section;
     },
     formatDate(dateString) {
       try {
         return this.moment(dateString, "MM-YYYY").format("MMMM YYYY");
-      } catch(err) {
+      } catch (err) {
         return dateString;
+      }
+    }
+  },
+  directives: {
+    infocus: {
+      isLiteral: true,
+      inserted: (el, binding) => {
+        let f = () => {
+          let rect = el.getBoundingClientRect();
+          let inView =
+            rect.width > 0 &&
+            rect.height > 0 &&
+            rect.top >= 0 &&
+            (rect.top + 200 <=
+              (window.innerHeight || document.documentElement.clientHeight) ||
+              rect.bottom + 100 <=
+                (window.innerHeight || document.documentElement.clientHeight));
+
+          if (inView) {
+            el.classList.add(binding.value);
+            el.classList.remove("hidden");
+          } else if (!inView && el.classList.contains(binding.value) > -1) {
+            el.classList.add("hidden");
+            el.classList.remove(binding.value);
+          }
+        };
+        window.addEventListener("scroll", f);
+        f();
       }
     }
   }
 };
 </script>
+
+<style>
+.showElement {
+  opacity: 1;
+  transform: translate(0, 0);
+  -webkit-transition: all 1.2s ease-out;
+  -moz-transition: all 1.2s ease-out;
+  transition: all 1.2s ease-out;
+}
+.hidden {
+  opacity: 0;
+  -webkit-transition: all 0.8s ease-out;
+  -moz-transition: all 0.8s ease-out;
+  transition: all 0.8s ease-out;
+}
+</style>
