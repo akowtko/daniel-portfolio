@@ -78,10 +78,11 @@
           </v-layout>
         </v-card-title>
         <v-card-text class="pt-0">
-          <div class="terciary--text caption pb-5">{{publication.authors}}</div>
+          <div class="terciary--text caption pb-4">{{publication.authors}}</div>
           <div class="title text--primary pb-2">Abstract</div>
           <div class="body-1 terciary--text pb-2">{{publication.abstract}}</div>
-          <v-chip>{{publication.status}}</v-chip><v-chip>Journal: {{publication.journal}} ({{publication.edition}})</v-chip>
+          <v-chip>{{publication.status}}</v-chip>
+          <v-chip>Journal: {{publication.journal}} ({{publication.edition}})</v-chip>
         </v-card-text>
       </v-card>
     </v-dialog>
