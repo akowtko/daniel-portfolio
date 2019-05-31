@@ -1,31 +1,35 @@
 <template>
-  <v-timeline>
+  <v-timeline dense>
     <v-timeline-item
       v-for="(position, i) in experience"
       :key="i"
       color="secondary"
       small
     >
-      <template v-slot:opposite>
-        <span
-          :class="`headline font-weight-bold secondary--text`"
-          v-text="dateString(position.start, position.end)"
-        ></span>
-      </template>
-      <div class="py-3" style="max-width:700px">
-        <div class="headline secondary--text">
-          {{ position.name }}
-        </div>
-        <div
-          class="subheading secondary--text font-weight-light mb-3"
-        >
-          {{ position.location }}
-        </div>
-        <div
-          class="body-1 primary--text pb-1"
-          v-html="position.description"
+      <v-layout pb-3>
+        <v-flex xs4>
+          <div
+          class="title font-weight-regular secondary--text pt-2"
+          v-html="dateString(position.start, position.end)"
         ></div>
-      </div>
+        </v-flex>
+        <v-flex xs8>
+          <div style="max-width:700px">
+            <div class="headline font-weight-bold secondary--text">
+              {{ position.name }}
+            </div>
+            <div
+              class="subheading secondary--text font-weight-light mb-3"
+            >
+              {{ position.location }}
+            </div>
+            <div
+              class="body-1 primary--text pb-1"
+              v-html="position.description"
+            ></div>
+          </div>
+        </v-flex>
+      </v-layout>
     </v-timeline-item>
   </v-timeline>
 
@@ -49,10 +53,16 @@ export default {
     },
     dateString(start, end) {
       if (end) {
-        return `${this.formatDate(start)} - ${this.formatDate(end)}`;
+        return `${this.formatDate(start)} - <br> ${this.formatDate(end)}`;
       }
       return this.formatDate(start);
     },
   },
 };
 </script>
+
+<style>
+  .v-timeline-item__dot {
+    align-self: normal;
+  }
+</style>
