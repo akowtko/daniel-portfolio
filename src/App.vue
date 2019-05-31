@@ -11,7 +11,7 @@
       <v-btn @click="scrollMeTo('about', 0)" flat>About</v-btn>
       <v-btn flat @click="scrollMeTo('skills', 0)">Skills</v-btn>
       <v-btn flat @click="changeTabs(1)">Experience</v-btn>
-      <v-btn flat @click="changeTabs(2)">Portfolio</v-btn>
+      <v-btn flat @click="changeTabs(2)">Publications</v-btn>
     </v-toolbar>
     <v-content>
       <v-tabs-items v-model="tab">
@@ -27,10 +27,10 @@
                   <v-img :src="require('./assets/daniel-square.jpg')" />
                 </v-avatar>
                 <div class="display-3 primary--text">
-                  Hello, I'm Daniel Higley.
+                  {{greetingText}}
                 </div>
                 <div class="display-2 primary--text">
-                  I'm an Experimental Physicist.
+                  {{greetingSubtext}}
                 </div>
               </v-layout>
             </v-img>
@@ -51,10 +51,7 @@
             >
               <v-flex sm9 px-5 pb-5 :class="{'pt-3': breakpoint == 'xs'}">
                 <div class="headline terciary--text font-weight-light">
-                  I'm passionate about discovering and developing transformative technologies through a combination of
-                  analysis of complex data and numerical simulations. I am particularly interested in materials, the
-                  interactions of materials with electromagnetic radiation (THz, optical, X-ray etc.), and quantum
-                  computing.
+                  {{about}}
                 </div>
               </v-flex>
               <v-flex sm3 py-3 px-2>
@@ -66,7 +63,8 @@
                   />
                   <education-tile
                     school="Colorado State"
-                    degree="B.S. in Electrical Engineering, 2012<br />Minors in Physics & Mathematics"
+                    degree="B.S. in Electrical Engineering, 2012<br />
+                    Minors in Physics & Mathematics"
                     :logo="require('./assets/colorado-state-logo.png')"
                   />
                 </v-layout>
@@ -106,9 +104,9 @@
               <experience-timeline/>
             </v-layout>
           </v-tab-item>
-          <v-tab-item key="portfolio">
+          <v-tab-item key="publications">
             <div class="display-2 primary--text text-xs-center pt-4 pb-4">
-              PORTFOLIO
+              PUBLICATIONS
             </div>
             <publications-table/>
           </v-tab-item>
@@ -139,12 +137,14 @@
 </template>
 
 <script>
-import ExperienceTimeline from '@/components/ExperienceTimeline';
-import EducationTile from '@/components/EducationTile';
-import PublicationsTable from '@/components/PublicationsTable';
-import SkillsTile from '@/components/SkillsTile';
+import ExperienceTimeline from '@/components/ExperienceTimeline.vue';
+import EducationTile from '@/components/EducationTile.vue';
+import PublicationsTable from '@/components/PublicationsTable.vue';
+import SkillsTile from '@/components/SkillsTile.vue';
 
 import skills from '@/assets/data/skills';
+
+const { greetingText, greetingSubtext, about } = require('./assets/data/about');
 
 export default {
   name: 'App',
@@ -155,6 +155,9 @@ export default {
     return {
       tab: 0,
       skills,
+      greetingText,
+      greetingSubtext,
+      about,
     };
   },
   methods: {

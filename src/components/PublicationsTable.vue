@@ -39,77 +39,47 @@
             <td class="text-xs-right">{{ props.item.authorPosition }}</td>
             <td class="text-xs-left">{{ props.item.status }}</td>
             <td class="text-xs-left" style="min-width:200px">{{ props.item.journal }}</td>
-            <td class="text-xs-right" v-if="!smallScreen">{{ props.item.edition }}</td>
+            <td class="text-xs-right" v-if="!smallScreen">{{ props.item.volume }}</td>
             <td class="text-xs-right" v-if="!smallScreen">{{ props.item.year }}</td>
+            <td class="text-xs-right"><open-link-button :link="props.item.link"/></td>
             </tr>
           </template>
         </v-data-table>
       </v-card>
     </v-flex>
-    <v-dialog
-      v-model="publicationDialog"
-      width="800"
-      >
-      <v-card>
-        <v-card-title class="text--primary pb-1">
-          <v-layout>
-            <v-flex xs11>
-              <div class="headline">{{publication.title}}</div>
-            </v-flex>
-            <v-flex xs1 text-xs-right>
-              <v-tooltip
-                  top
-                >
-                <span>Go to Publication</span>
-                <v-btn
-                  slot="activator"
-                  class="ma-0"
-                  icon
-                  flat
-                  color="grey"
-                  @click.stop="openLink(publication.link)"
-                >
-                  <v-icon size="20">
-                    open_in_new
-                  </v-icon>
-                </v-btn>
-              </v-tooltip>
-            </v-flex>
-          </v-layout>
-        </v-card-title>
-        <v-card-text class="pt-0">
-          <div class="terciary--text caption pb-4">{{publication.authors}}</div>
-          <div class="title text--primary pb-2">Abstract</div>
-          <div class="body-1 terciary--text pb-2">{{publication.abstract}}</div>
-          <v-chip>{{publication.status}}</v-chip>
-          <v-chip>Journal: {{publication.journal}} ({{publication.edition}})</v-chip>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
+    <publication-detail-dialog
+      :title="publication.title"
+      :authors="publication.authors"
+      :status="publication.status"
+      :journal="publication.journal"
+      :article="publication.article"
+      :volume="publication.volume"
+      :abstract="publication.abstract"
+      :link="publication.link"
+      :dialog-model="publicationDialog"
+    />
   </v-layout>
 </template>
 
 <script>
 import publications from '@/assets/data/publications';
+import OpenLinkButton from './OpenLinkButton.vue';
+import PublicationDetailDialog from './PublicationDetailDialog.vue';
 
 export default {
   name: 'publications-table',
+  components: {
+    OpenLinkButton,
+    PublicationDetailDialog,
+  },
   data() {
     return {
       publications,
       search: '',
       statusFilter: [],
       publicationDialog: false,
-      statusOptions: ['Published', 'In Preparation', 'Under Review'],
+      statusOptions: ['Published', 'Under Review', 'Submitted'],
       publication: {},
-      authors: '',
-      journal: '',
-      edition: '',
-      title: '',
-      abstract: '',
-      link: '',
-      status: '',
-      year: '',
       headers: [
         {
           text: 'Title',
@@ -117,13 +87,15 @@ export default {
           sortable: true,
           value: 'title',
           class: 'subheading',
+          mobileVisible: true,
         },
         {
-          text: 'Author',
+          text: 'Author #',
           align: 'left',
-          sortable: false,
+          sortable: true,
           value: 'authorPosition',
           class: 'subheading',
+          mobileVisible: true,
         },
         {
           text: 'Status',
@@ -131,6 +103,7 @@ export default {
           sortable: false,
           value: 'status',
           class: 'subheading',
+          mobileVisible: true,
         },
         {
           text: 'Journal',
@@ -138,13 +111,15 @@ export default {
           sortable: true,
           value: 'journal',
           class: 'subheading',
+          mobileVisible: true,
         },
         {
-          text: 'Edition',
+          text: 'Volume',
           align: 'right',
           sortable: false,
-          value: 'edition',
+          value: 'volume',
           class: 'subheading',
+          mobileVisible: false,
         },
         {
           text: 'Year',
@@ -152,6 +127,15 @@ export default {
           sortable: true,
           value: 'year',
           class: 'subheading',
+          mobileVisible: false,
+        },
+        {
+          text: 'Link',
+          align: 'right',
+          sortable: false,
+          value: 'link',
+          class: 'subheading',
+          mobileVisible: true,
         },
       ],
     };
@@ -167,7 +151,8 @@ export default {
 
       if (this.search) {
         filteredPublications = this._.filter(filteredPublications,
-          publication => this._.includes(publication.title, this.search));
+          publication => this._.includes(publication.title.toLowerCase(),
+            this.search.toLowerCase()));
       }
       return filteredPublications;
     },
@@ -181,19 +166,15 @@ export default {
     },
     filteredHeaders() {
       if (this.smallScreen) {
-        return this.headers.slice(0, 4);
+        return this._.filter(this.headers, header => header.mobileVisible);
       }
       return this.headers;
     },
   },
   methods: {
     populatePublicationDialog(publication) {
-      console.log(publication);
       this.publication = publication;
       this.publicationDialog = true;
-    },
-    openLink(url) {
-      window.open(url);
     },
   },
 };
