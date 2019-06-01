@@ -1,6 +1,25 @@
 <template>
   <v-app>
     <v-toolbar dark app color="primary">
+      <v-menu bottom left v-if="breakpoint == 'xs'">
+            <template v-slot:activator="{ on }">
+              <v-btn
+                dark
+                icon
+                v-on="on"
+              >
+                <v-icon>more_vert</v-icon>
+              </v-btn>
+            </template>
+        <v-list>
+          <v-list-tile @click="scrollMeTo('about', 0)">
+            <v-list-tile-title>About</v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile @click="scrollMeTo('skills', 0)">
+            <v-list-tile-title>Skills</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
       <v-toolbar-title
         class="headline clickable"
         @click="scrollMeTo('home', 0)"
@@ -8,10 +27,12 @@
         Daniel Higley
       </v-toolbar-title>
       <v-spacer></v-spacer>
+      <span v-if="breakpoint !== 'xs'">
       <v-btn @click="scrollMeTo('about', 0)" flat>About</v-btn>
       <v-btn flat @click="scrollMeTo('skills', 0)">Skills</v-btn>
-      <v-btn flat @click="changeTabs(1)">Experience</v-btn>
-      <v-btn flat @click="changeTabs(2)">Publications</v-btn>
+      <v-btn flat @click="scrollMeTo('experience', 1)">Experience</v-btn>
+      <v-btn flat @click="scrollMeTo('publications', 2)">Publications</v-btn>
+      </span>
     </v-toolbar>
     <v-content>
       <v-tabs-items v-model="tab">
@@ -97,7 +118,10 @@
             </v-layout>
           </v-tab-item>
           <v-tab-item key="experience">
-            <div class="display-2 primary--text text-xs-center pt-4 pb-5">
+            <div
+              class="display-2 primary--text text-xs-center pt-4 pb-5"
+              ref="experience"
+            >
               EXPERIENCE
             </div>
             <v-layout pa-3 justify-center>
@@ -105,7 +129,10 @@
             </v-layout>
           </v-tab-item>
           <v-tab-item key="publications">
-            <div class="display-2 primary--text text-xs-center pt-4 pb-4">
+            <div
+              class="display-2 primary--text text-xs-center pt-4 pb-4"
+              ref="publications"
+            >
               PUBLICATIONS
             </div>
             <publications-table/>

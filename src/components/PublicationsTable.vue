@@ -32,6 +32,7 @@
           no-data-text="No publications found with these filters."
           :headers="filteredHeaders"
           :items="filteredPublications"
+          :rows-per-page-items="[10, {'text':'$vuetify.dataIterator.rowsPerPageAll','value':-1}]"
         >
           <template slot="items" slot-scope="props">
             <tr @click="populatePublicationDialog(props.item)" class="clickable">
