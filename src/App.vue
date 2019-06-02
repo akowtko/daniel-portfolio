@@ -1,13 +1,14 @@
 <template>
   <v-app>
     <navigation-drawer
-      :dialog-model="drawer.open"
+      :open-dialog="drawer.open"
+      :close-dialog="drawer.close"
       v-on:navigation-click="navigationClick"
     ></navigation-drawer>
     <v-toolbar dark app color="primary">
       <v-toolbar-side-icon
         v-if="breakpoint == 'sm' || breakpoint == 'xs'"
-        @click="toggleDrawer"
+        @click="drawer.open = !drawer.open"
       >
       </v-toolbar-side-icon>
       <v-toolbar-title
@@ -193,7 +194,8 @@ export default {
       headshot,
       name,
       drawer: {
-        open: null,
+        open: false,
+        close: false,
       },
     };
   },
@@ -209,11 +211,8 @@ export default {
       }, 50);
     },
     navigationClick(refName, tab) {
-      this.toggleDrawer();
+      this.drawer.close = !this.drawer.close;
       this.scrollMeTo(refName, tab);
-    },
-    toggleDrawer() {
-      this.drawer.open = !this.drawer.open;
     },
     changeTabs(section) {
       this.tab = section;

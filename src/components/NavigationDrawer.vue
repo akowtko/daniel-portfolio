@@ -4,6 +4,7 @@
     fixed
     disable-resize-watcher
     app
+    temporary
     v-model="dialogModel"
   >
     <v-list>
@@ -52,16 +53,32 @@ const { headshot } = require('../assets/data/links');
 export default {
   name: 'navigation-drawer',
   props: {
-    dialogModel: {
+    openDialog: {
       type: Boolean,
-      default: false,
+      default: null,
+    },
+    closeDialog: {
+      type: Boolean,
+      default: null,
     },
   },
   data() {
     return {
       name,
       headshot,
+      dialogModel: false,
     };
+  },
+  mounted() {
+    this.dialogModel = null;
+  },
+  watch: {
+    openDialog() {
+      this.dialogModel = true;
+    },
+    closeDialog() {
+      this.dialogModel = false;
+    },
   },
   methods: {
     navigationClick(refName, tab) {
