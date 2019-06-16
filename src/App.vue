@@ -1,33 +1,24 @@
 <template>
   <v-app>
+    <navigation-drawer
+      :open-dialog="drawer.open"
+      :close-dialog="drawer.close"
+      v-on:navigation-click="navigationClick"
+    ></navigation-drawer>
     <v-toolbar dark app color="primary">
-      <v-menu bottom left v-if="breakpoint == 'xs'">
-            <template v-slot:activator="{ on }">
-              <v-btn
-                dark
-                icon
-                v-on="on"
-              >
-                <v-icon>more_vert</v-icon>
-              </v-btn>
-            </template>
-        <v-list>
-          <v-list-tile @click="scrollMeTo('about', 0)">
-            <v-list-tile-title>About</v-list-tile-title>
-          </v-list-tile>
-          <v-list-tile @click="scrollMeTo('skills', 0)">
-            <v-list-tile-title>Skills</v-list-tile-title>
-          </v-list-tile>
-        </v-list>
-      </v-menu>
+      <v-toolbar-side-icon
+        v-if="breakpoint == 'sm' || breakpoint == 'xs'"
+        @click="drawer.open = !drawer.open"
+      >
+      </v-toolbar-side-icon>
       <v-toolbar-title
         class="headline clickable"
         @click="scrollMeTo('home', 0)"
       >
-        Daniel Higley
+        {{name}}
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <span v-if="breakpoint !== 'xs'">
+      <span v-if="breakpoint !== 'sm' && breakpoint !== 'xs'">
       <v-btn @click="scrollMeTo('about', 0)" flat>About</v-btn>
       <v-btn flat @click="scrollMeTo('skills', 0)">Skills</v-btn>
       <v-btn flat @click="scrollMeTo('experience', 1)">Experience</v-btn>
@@ -40,12 +31,12 @@
           <v-tab-item key="home">
             <v-img
               ref="home"
-              :src="require('./assets/polygon-background.jpg')"
+              :src="backgroundImage"
               height="600px"
             >
               <v-layout column justify-center align-center fill-height>
                 <v-avatar size="185" class="pb-4">
-                  <v-img :src="require('./assets/daniel-square.jpg')" />
+                  <v-img :src="headshot" />
                 </v-avatar>
                 <div class="display-3 primary--text">
                   {{greetingText}}
@@ -78,16 +69,12 @@
               <v-flex sm3 py-3 px-2>
                 <v-layout column wrap align-center>
                   <education-tile
-                    school="Stanford"
-                    degree="PhD in Applied Physics, 2018<br />M.S. in Applied Physics, 2017"
-                    :logo="require('./assets/stanford-logo.jpg')"
-                  />
-                  <education-tile
-                    school="Colorado State"
-                    degree="B.S. in Electrical Engineering, 2012<br />
-                    Minors in Physics & Mathematics"
-                    :logo="require('./assets/colorado-state-logo.png')"
-                  />
+                    v-for="school in education"
+                    :key="school.school"
+                    :school="school.school"
+                    :degree="school.degree"
+                    :logo="school.logo"
+                  ></education-tile>
                 </v-layout>
               </v-flex>
             </v-layout>
@@ -147,9 +134,18 @@
           <v-flex xs8 text-xs-right>
             <v-btn
               flat
+              small
+              :href="resumeLink"
+              target="_blank"
+              >
+              Resume
+            </v-btn>
+            <v-btn
+              v-if="linkedIn.length > 0"
+              flat
               fab
               small
-              href="https://www.linkedin.com/in/dhigley/"
+              :href="linkedIn"
               target="_blank"
             >
               <v-icon color="white">
@@ -165,18 +161,24 @@
 
 <script>
 import ExperienceTimeline from '@/components/ExperienceTimeline.vue';
-import EducationTile from '@/components/EducationTile.vue';
+import EducationTile from '@/components/EducationTile/EducationTile.vue';
 import PublicationsTable from '@/components/PublicationsTable.vue';
 import SkillsTile from '@/components/SkillsTile.vue';
+import NavigationDrawer from '@/components/NavigationDrawer.vue';
 
 import skills from '@/assets/data/skills';
 
-const { greetingText, greetingSubtext, about } = require('./assets/data/about');
+const {
+  greetingText, greetingSubtext, about, education, name,
+} = require('./assets/data/about');
+const {
+  resumeLink, linkedIn, backgroundImage, headshot,
+} = require('./assets/data/links');
 
 export default {
   name: 'App',
   components: {
-    PublicationsTable, ExperienceTimeline, EducationTile, SkillsTile,
+    PublicationsTable, ExperienceTimeline, EducationTile, SkillsTile, NavigationDrawer,
   },
   data() {
     return {
@@ -185,6 +187,16 @@ export default {
       greetingText,
       greetingSubtext,
       about,
+      education,
+      resumeLink,
+      linkedIn,
+      backgroundImage,
+      headshot,
+      name,
+      drawer: {
+        open: false,
+        close: false,
+      },
     };
   },
   methods: {
@@ -197,6 +209,10 @@ export default {
 
         window.scrollTo({ top, behavior: 'smooth' });
       }, 50);
+    },
+    navigationClick(refName, tab) {
+      this.drawer.close = !this.drawer.close;
+      this.scrollMeTo(refName, tab);
     },
     changeTabs(section) {
       this.tab = section;
@@ -244,5 +260,7 @@ export default {
 </script>
 
 <style>
-
+.v-navigation-drawer div[role="listitem"] {
+  width: 100%;
+}
 </style>
