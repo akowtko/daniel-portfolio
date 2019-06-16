@@ -161,7 +161,7 @@
 
 <script>
 import ExperienceTimeline from '@/components/ExperienceTimeline.vue';
-import EducationTile from '@/components/EducationTile.vue';
+import EducationTile from '@/components/EducationTile/EducationTile.vue';
 import PublicationsTable from '@/components/PublicationsTable.vue';
 import SkillsTile from '@/components/SkillsTile.vue';
 import NavigationDrawer from '@/components/NavigationDrawer.vue';
