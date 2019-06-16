@@ -160,11 +160,11 @@
 </template>
 
 <script>
-import ExperienceTimeline from '@/components/ExperienceTimeline.vue';
+import ExperienceTimeline from '@/components/ExperienceTimeline/ExperienceTimeline.vue';
 import EducationTile from '@/components/EducationTile/EducationTile.vue';
 import PublicationsTable from '@/components/PublicationsTable.vue';
 import SkillsTile from '@/components/SkillsTile.vue';
-import NavigationDrawer from '@/components/NavigationDrawer.vue';
+import NavigationDrawer from '@/components/NavigationDrawer/NavigationDrawer.vue';
 
 import skills from '@/assets/data/skills';
 

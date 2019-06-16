@@ -47,8 +47,8 @@
 </template>
 
 <script>
-const { name } = require('../assets/data/about');
-const { headshot } = require('../assets/data/links');
+const { name } = require('../../assets/data/about');
+const { headshot } = require('../../assets/data/links');
 
 export default {
   name: 'navigation-drawer',
@@ -87,7 +87,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-
-</style>

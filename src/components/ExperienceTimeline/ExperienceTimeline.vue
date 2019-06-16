@@ -1,5 +1,5 @@
 <template>
-  <v-timeline dense>
+  <v-timeline dense align-top>
     <v-timeline-item
       v-for="(position, i) in experience"
       :key="i"
