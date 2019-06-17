@@ -64,8 +64,8 @@
 
 <script>
 import publications from '@/assets/data/publications';
-import OpenLinkButton from './OpenLinkButton.vue';
-import PublicationDetailDialog from './PublicationDetailDialog.vue';
+import OpenLinkButton from '../OpenLinkButton/OpenLinkButton.vue';
+import PublicationDetailDialog from '../PublicationDetailDialog/PublicationDetailDialog.vue';
 
 export default {
   name: 'publications-table',
@@ -180,6 +180,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-</style>

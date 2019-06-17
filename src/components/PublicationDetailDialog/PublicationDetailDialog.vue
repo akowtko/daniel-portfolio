@@ -25,11 +25,10 @@
       </v-card-text>
     </v-card>
   </v-dialog>
-
 </template>
 
 <script>
-import OpenLinkButton from './OpenLinkButton.vue';
+import OpenLinkButton from '../OpenLinkButton/OpenLinkButton.vue';
 
 export default {
   name: 'publication-detail-dialog',
@@ -80,7 +79,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-
-</style>
