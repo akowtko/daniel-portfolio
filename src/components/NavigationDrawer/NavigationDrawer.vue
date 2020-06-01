@@ -8,39 +8,39 @@
     v-model="dialogModel"
   >
     <v-list>
-      <v-list-tile @click="navigationClick('home', 0)">
-        <v-list-tile-avatar>
+      <v-list-item @click="navigationClick('home', 0)">
+        <v-list-item-avatar>
           <v-img :src="headshot" />
-        </v-list-tile-avatar>
-        <v-list-tile-title>
+        </v-list-item-avatar>
+        <v-list-item-title>
           {{ name }}
-        </v-list-tile-title>
-      </v-list-tile>
+        </v-list-item-title>
+      </v-list-item>
       <v-divider light/>
-      <v-list-tile @click="navigationClick('about', 0)">
-        <v-list-tile-avatar>
+      <v-list-item @click="navigationClick('about', 0)">
+        <v-list-item-avatar>
           <v-icon>contacts</v-icon>
-        </v-list-tile-avatar>
-        <v-list-tile-title>About</v-list-tile-title>
-      </v-list-tile>
-      <v-list-tile @click="navigationClick('skills', 0)">
-        <v-list-tile-avatar>
+        </v-list-item-avatar>
+        <v-list-item-title>About</v-list-item-title>
+      </v-list-item>
+      <v-list-item @click="navigationClick('skills', 0)">
+        <v-list-item-avatar>
           <v-icon>extension</v-icon>
-        </v-list-tile-avatar>
-        <v-list-tile-title>Skills</v-list-tile-title>
-      </v-list-tile>
-      <v-list-tile @click="navigationClick('experience', 1)">
-        <v-list-tile-avatar>
+        </v-list-item-avatar>
+        <v-list-item-title>Skills</v-list-item-title>
+      </v-list-item>
+      <v-list-item @click="navigationClick('experience', 1)">
+        <v-list-item-avatar>
           <v-icon>work_outline</v-icon>
-        </v-list-tile-avatar>
-        <v-list-tile-title>Experience</v-list-tile-title>
-      </v-list-tile>
-      <v-list-tile @click="navigationClick('publications', 2)">
-        <v-list-tile-avatar>
+        </v-list-item-avatar>
+        <v-list-item-title>Experience</v-list-item-title>
+      </v-list-item>
+      <v-list-item @click="navigationClick('publications', 2)">
+        <v-list-item-avatar>
           <v-icon>description</v-icon>
-        </v-list-tile-avatar>
-        <v-list-tile-title>Publications</v-list-tile-title>
-      </v-list-tile>
+        </v-list-item-avatar>
+        <v-list-item-title>Publications</v-list-item-title>
+      </v-list-item>
     </v-list>
   </v-navigation-drawer>
 

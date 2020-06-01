@@ -5,14 +5,14 @@
   >
     <v-card>
       <v-card-title class="text--primary pb-1">
-        <v-layout>
-          <v-flex xs11>
+        <v-row>
+          <v-col cols="11">
             <div class="headline">{{title}}</div>
-          </v-flex>
-          <v-flex xs1 text-xs-right>
+          </v-col>
+          <v-col class="text-right" cols="1" >
             <open-link-button :link="link"/>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-card-title>
       <v-card-text class="pt-0">
         <div class="terciary--text caption pb-4">{{authors}}</div>

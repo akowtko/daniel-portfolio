@@ -6,30 +6,30 @@
       color="secondary"
       small
     >
-      <v-layout pb-3>
-        <v-flex xs4>
+      <v-row class="pb-4" no-gutters>
+        <v-col cols="4">
           <div
-          class="title font-weight-regular secondary--text pt-2"
+          class="title font-weight-regular secondary--text pt-3"
           v-html="dateString(position.start, position.end)"
         ></div>
-        </v-flex>
-        <v-flex xs8>
+        </v-col>
+        <v-col cols="8">
           <div style="max-width:700px">
             <div class="headline font-weight-bold secondary--text">
               {{ position.name }}
             </div>
             <div
-              class="subheading secondary--text font-weight-light mb-3"
+              class="subheading secondary--text font-weight-light mb-4"
             >
               {{ position.location }}
             </div>
             <div
-              class="body-1 primary--text pb-1"
+              class="body-2 primary--text pb-1"
               v-html="position.description"
             ></div>
           </div>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-timeline-item>
   </v-timeline>
 

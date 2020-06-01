@@ -1,29 +1,29 @@
 <template>
-  <v-flex
-      md3
-      sm4
-      xs5
-      pb-3
-    >
+  <v-col class="pb-4"
+      md="3"
+      sm="4"
+      cols="5"
+  >
       <v-btn
         fab
-        outline
+        outlined
         color="secondary"
         background-color="white"
         style="height:80px;width:80px"
+        class="mb-2"
       >
         <v-icon v-if="icon" size="40">{{ icon }}</v-icon>
-        <v-img v-else height="40" contain :src="image" />
+        <v-img v-else height="35" contain :src="image" />
       </v-btn>
       <div class="headline turquoise--text" style="font-weight:500">
         {{ name }}
       </div>
-      <div class="body-1 terciary--text">
+      <div class="body-2 terciary--text">
         <span v-for="example in examples" :key="example">
           {{ example }}<br />
         </span>
       </div>
-    </v-flex>
+    </v-col>
 </template>
 
 <script>

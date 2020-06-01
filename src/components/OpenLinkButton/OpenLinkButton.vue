@@ -7,7 +7,7 @@
       slot="activator"
       class="ma-0"
       icon
-      flat
+      text
       color="grey"
       @click.stop="openLink(link)"
     >

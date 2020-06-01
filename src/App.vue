@@ -1,41 +1,42 @@
 <template>
-  <v-app>
+  <v-app :style="{background: 'blue'}">
     <navigation-drawer
       :open-dialog="drawer.open"
       :close-dialog="drawer.close"
       v-on:navigation-click="navigationClick"
     ></navigation-drawer>
-    <v-toolbar dark app color="primary">
-      <v-toolbar-side-icon
+    <v-app-bar app dark color="primary">
+      <v-app-bar-nav-icon
         v-if="breakpoint == 'sm' || breakpoint == 'xs'"
         @click="drawer.open = !drawer.open"
       >
-      </v-toolbar-side-icon>
+      </v-app-bar-nav-icon>
       <v-toolbar-title
-        class="headline clickable"
+        class="headline clickable font-weight-medium"
         @click="scrollMeTo('home', 0)"
       >
         {{name}}
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <span v-if="breakpoint !== 'sm' && breakpoint !== 'xs'">
-      <v-btn @click="scrollMeTo('about', 0)" flat>About</v-btn>
-      <v-btn flat @click="scrollMeTo('skills', 0)">Skills</v-btn>
-      <v-btn flat @click="scrollMeTo('experience', 1)">Experience</v-btn>
-      <v-btn flat @click="scrollMeTo('publications', 2)">Publications</v-btn>
+      <v-btn @click="scrollMeTo('about', 0)" text>About</v-btn>
+      <v-btn text @click="scrollMeTo('skills', 0)">Skills</v-btn>
+      <v-btn text @click="scrollMeTo('experience', 1)">Experience</v-btn>
+      <v-btn text @click="scrollMeTo('publications', 2)">Publications</v-btn>
       </span>
-    </v-toolbar>
+    </v-app-bar>
     <v-content>
       <v-tabs-items v-model="tab">
-        <v-container fluid pa-0>
+        <v-container class="pa-0" fluid >
           <v-tab-item key="home">
             <v-img
               ref="home"
               :src="backgroundImage"
               height="600px"
             >
-              <v-layout column justify-center align-center fill-height>
-                <v-avatar size="185" class="pb-4">
+              <v-row class="fill-height text-center"  no-gutters align="center" justify="center">
+                <v-col class="mt-n12">
+                <v-avatar size="185" class="pb-6">
                   <v-img :src="headshot" />
                 </v-avatar>
                 <div class="display-3 primary--text">
@@ -44,54 +45,54 @@
                 <div class="display-2 primary--text">
                   {{greetingSubtext}}
                 </div>
-              </v-layout>
+                </v-col>
+              </v-row>
             </v-img>
             <div
               ref="about"
-              class="display-2 primary--text text-xs-center pt-4 hidden"
+              class="display-2 primary--text text-center pt-12 hidden"
               v-infocus="'showElement'"
             >
               ABOUT
             </div>
-            <v-layout
-              justify-center
-              align-center
-              fill-height
-              class="hidden"
-              wrap
+            <v-row
+              no-gutters
+              justify="center"
+              align="center"
+              class="hidden fill-height"
               v-infocus="'showElement'"
             >
-              <v-flex sm9 px-5 pb-5 :class="{'pt-3': breakpoint == 'xs'}">
+              <v-col class="px-12 pb-12" sm="9" :class="{'pt-3': breakpoint == 'xs'}">
                 <div class="headline terciary--text font-weight-light">
                   {{about}}
                 </div>
-              </v-flex>
-              <v-flex sm3 py-3 px-2>
-                <v-layout column wrap align-center>
+              </v-col>
+              <v-col class="py-4 px-2" sm="3" >
+                <v-row
+                  align="center"
+                  justify="center"
+                   no-gutters
+                   v-for="school in education"
+                  :key="school.school"
+                >
                   <education-tile
-                    v-for="school in education"
-                    :key="school.school"
                     :school="school.school"
                     :degree="school.degree"
                     :logo="school.logo"
                   ></education-tile>
-                </v-layout>
-              </v-flex>
-            </v-layout>
+                </v-row>
+              </v-col>
+            </v-row>
             <div
               ref="skills"
-              class="display-2 primary--text text-xs-center pt-4 pb-4 hidden"
+              class="display-2 primary--text text-center py-6 hidden"
               v-infocus="'showElement'"
             >
               SKILLS
             </div>
-            <v-layout
-              justify-center
-              text-xs-center
-              fill-height
-              wrap
-              pb-4
-              class="hidden"
+            <v-row
+              justify="center"
+              class="hidden text-center fill-height pb-6"
               v-infocus="'showElement'"
             >
               <skills-tile
@@ -102,22 +103,22 @@
                 :image="skill.image"
                 :examples="skill.examples"
               />
-            </v-layout>
+            </v-row>
           </v-tab-item>
           <v-tab-item key="experience">
             <div
-              class="display-2 primary--text text-xs-center pt-4 pb-5"
+              class="display-2 primary--text text-center pt-4 pb-5"
               ref="experience"
             >
               EXPERIENCE
             </div>
-            <v-layout pa-3 justify-center>
+            <v-row class="pa-3" justify="center">
               <experience-timeline/>
-            </v-layout>
+            </v-row>
           </v-tab-item>
           <v-tab-item key="publications">
             <div
-              class="display-2 primary--text text-xs-center pt-4 pb-4"
+              class="display-2 primary--text text-center pt-6 pb-4"
               ref="publications"
             >
               PUBLICATIONS
@@ -126,15 +127,16 @@
           </v-tab-item>
         </v-container>
       </v-tabs-items>
-      <v-footer color="primary" dark app height="45" class="px-3">
-        <v-layout align-center fill-height>
-          <v-flex xs4>
-            <span class="white--text">&copy;2019 — Nicole Kowtko</span>
-          </v-flex>
-          <v-flex xs8 text-xs-right>
+      <v-footer color="primary" dark app height="45" class="px-4">
+        <v-row class="fill-height" align="baseline" no-gutters>
+          <v-col cols="4">
+            <span class="white--text body-2">&copy;2019 — Nicole Kowtko</span>
+          </v-col>
+          <v-col class="text-right" cols="8" >
             <v-btn
-              flat
+              text
               small
+              class="mr-3"
               :href="resumeLink"
               target="_blank"
               >
@@ -142,26 +144,26 @@
             </v-btn>
             <v-btn
               v-if="linkedIn.length > 0"
-              flat
+              text
               fab
               small
               :href="linkedIn"
               target="_blank"
             >
-              <v-icon color="white">
+              <v-icon color="white" size="18px">
                 fab fa-linkedin
               </v-icon>
             </v-btn>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-footer>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import ExperienceTimeline from '@/components/ExperienceTimeline/ExperienceTimeline.vue';
-import EducationTile from '@/components/EducationTile/EducationTile.vue';
+import ExperienceTimeline from '@/components/ExperienceTimeline/ExperienceTimeline';
+import EducationTile from '@/components/EducationTile/EducationTile';
 import PublicationsTable from '@/components/PublicationsTable/PublicationsTable.vue';
 import SkillsTile from '@/components/SkillsTile/SkillsTile.vue';
 import NavigationDrawer from '@/components/NavigationDrawer/NavigationDrawer.vue';

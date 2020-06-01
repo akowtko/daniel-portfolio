@@ -1,6 +1,6 @@
 <template>
-  <v-flex sm6 text-xs-center pb-3>
-    <v-btn outline fab large color="secondary">
+  <div class="text-center pb-4" sm="6" >
+    <v-btn outlined fab large color="secondary">
       <v-avatar size="60">
         <v-img :src="logo" />
       </v-avatar>
@@ -10,7 +10,7 @@
     </div>
     <div class="subheading primary--text" v-html="degree">
     </div>
-  </v-flex>
+  </div>
 </template>
 
 <script>
